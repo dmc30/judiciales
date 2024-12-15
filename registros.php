@@ -1,5 +1,25 @@
 <?php
+// Configuración de conexión a la base de datos
+$host = 'localhost';
+$dbname = 'judi';
+$username = 'root';
+$password = '';
+
 $mensaje = isset($_GET['mensaje']) ? htmlspecialchars($_GET['mensaje']) : ''; // Obtener el mensaje de la URL
+$partidos = []; // Variable para almacenar los candidatos
+
+try {
+    // Conexión a la base de datos usando PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Consulta para obtener los candidatos (partidos)
+    $stmt = $pdo->query("SELECT id, nombre_partido FROM partidos");
+    $partidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +44,7 @@ $mensaje = isset($_GET['mensaje']) ? htmlspecialchars($_GET['mensaje']) : ''; //
 
 <h2 style="text-align: center; margin-top: 20px;">Registro</h2>
 
-<form action="procesar_registro.php" method="POST" enctype="multipart/form-data" style="max-width: 500px; margin: auto;">
+<form action="procesar_registros.php" method="POST" enctype="multipart/form-data" style="max-width: 500px; margin: auto;">
     <label for="nombre_completo">Nombre Completo:</label>
     <input type="text" id="nombre_completo" name="nombre_completo" required>
 

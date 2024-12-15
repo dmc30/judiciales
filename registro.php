@@ -1,5 +1,25 @@
 <?php
+// Configuración de conexión a la base de datos
+$host = 'localhost';
+$dbname = 'judi';
+$username = 'root';
+$password = '';
+
 $mensaje = isset($_GET['mensaje']) ? htmlspecialchars($_GET['mensaje']) : ''; // Obtener el mensaje de la URL
+$partidos = []; // Variable para almacenar los candidatos
+
+try {
+    // Conexión a la base de datos usando PDO
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Consulta para obtener los candidatos (partidos)
+    $stmt = $pdo->query("SELECT id, nombre_partido FROM partidos");
+    $partidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
