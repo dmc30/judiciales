@@ -42,7 +42,7 @@ try {
         $mensaje = "Método no permitido.";
     }
 
-    header("Location: registro.php?mensaje=" . urlencode($mensaje));
+    header("Location: registros.php?mensaje=" . urlencode($mensaje));
     exit;
 } catch (PDOException $e) {
     $mensaje = "Error en la conexión a la base de datos: " . $e->getMessage();
@@ -50,4 +50,3 @@ try {
     exit;
 }
 ?>
-
